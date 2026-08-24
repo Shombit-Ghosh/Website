@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Born2Fit | Premium Gym & Personal Training - New Town, Kolkata</title>
+  <meta name="description" content="Born2Fit Gym located above Gouranganagar Post Office, New Town, Kolkata. Led by Mr. India & Founder Mr. Jit Das and Coach Mr. Suman. State-of-the-art equipment, personalized workout plans, and elite coaching." />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#FF3B30',
+              orange: '#FF5E3A',
+              dark: '#0A0A0C',
+              card: '#141418',
+              cardLight: '#FFFFFF',
+              border: '#23232A'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Oswald', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+    .glassmorphism {
+      background: rgba(20, 20, 24, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .light .glassmorphism {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  </style>
+</head>
+
+<body class="bg-[#0A0A0C] text-gray-100 dark:bg-[#0A0A0C] dark:text-gray-100 transition-colors duration-300">
+
+  <!-- ================= NOTIFICATION TOAST ================= -->
+  <div id="toast" class="fixed top-6 right-6 z-50 transform translate-x-96 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="flex items-center gap-3 bg-zinc-900 border border-brand-orange text-white px-5 py-4 rounded-xl shadow-2xl">
+      <i id="toast-icon" data-lucide="check-circle" class="w-5 h-5 text-brand-orange"></i>
+      <div>
+        <h4 id="toast-title" class="font-bold text-sm">Notification</h4>
+        <p id="toast-message" class="text-xs text-gray-400">Action performed successfully</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= STICKY NAVBAR ================= -->
+  <header id="main-header" class="fixed top-0 left-0 w-full z-40 transition-all duration-300 border-b border-white/5 py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-orange to-brand-red flex items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-red/20 group-hover:scale-105 transition">
+          <i data-lucide="flame" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-2xl font-display font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-brand-orange">Born2Fit</span>
+          <span class="block text-[9px] text-gray-400 -mt-1 tracking-widest font-sans uppercase">New Town, Kolkata</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-300">
+        <a href="#about" class="hover:text-brand-orange transition">About</a>
+        <a href="#programs" class="hover:text-brand-orange transition">Programs</a>
+        <a href="#trainers" class="hover:text-brand-orange transition">Coaches</a>
+        <a href="#membership" class="hover:text-brand-orange transition">Membership</a>
+        <a href="#bmi" class="hover:text-brand-orange transition">BMI Calculator</a>
+        <a href="#tracker" class="hover:text-brand-orange transition">Tracker</a>
+        <a href="#location" class="hover:text-brand-orange transition">Location & Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="hidden lg:flex items-center gap-4">
+        <button onclick="toggleTheme()" class="p-2 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-gray-300 transition" title="Toggle Theme">
+          <i id="theme-icon" data-lucide="sun" class="w-4 h-4"></i>
+        </button>
+        <button onclick="openModal('auth-modal')" class="text-sm font-semibold text-gray-300 hover:text-white transition">
+          Login
+        </button>
+        <button onclick="openBookingModal()" class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-brand-orange to-brand-red text-white text-sm font-bold shadow-lg shadow-brand-red/25 hover:shadow-brand-red/40 hover:scale-[1.02] active:scale-[0.98] transition">
+          Book a Session
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-gray-300 hover:text-white">
+        <i id="menu-icon" data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-zinc-950/95 border-b border-zinc-800 px-6 py-6 space-y-4">
+      <a href="#about" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">About</a>
+      <a href="#programs" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">Programs</a>
+      <a href="#trainers" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">Coaches</a>
+      <a href="#membership" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">Membership</a>
+      <a href="#bmi" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">BMI Calculator</a>
+      <a href="#tracker" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">Workout Tracker</a>
+      <a href="#location" onclick="toggleMobileMenu()" class="block text-gray-300 font-medium hover:text-brand-orange">Location & Contact</a>
+      <div class="pt-4 border-t border-zinc-800 flex flex-col gap-3">
+        <button onclick="openModal('auth-modal'); toggleMobileMenu()" class="w-full py-2.5 text-center text-sm font-semibold text-gray-300 border border-zinc-700 rounded-lg">Login / Portal</button>
+        <button onclick="openBookingModal(); toggleMobileMenu()" class="w-full py-2.5 bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold rounded-lg text-sm">Book Free Session</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" alt="Gym Background" class="w-full h-full object-cover object-center scale-105 animate-pulse duration-1000 opacity-30" />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-[#0A0A0C]/70 to-[#0A0A0C]/40"></div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-xs font-bold tracking-wide uppercase mb-6 animate-bounce">
+        <i data-lucide="trophy" class="w-3.5 h-3.5"></i> Founded & Coached by Mr. India Jit Das
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6">
+        BUILD YOUR <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-red">STRONGEST</span> SELF.
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 font-normal leading-relaxed mb-4">
+        Welcome to Born2Fit. Personal training, powerhouse workouts, and championship-tested guidance right in the heart of New Town, Kolkata.
+      </p>
+
+      <p class="text-xs sm:text-sm text-brand-orange font-semibold mb-8 flex items-center justify-center gap-1.5">
+        <i data-lucide="map-pin" class="w-4 h-4"></i> Above Gouranganagar Post Office, New Town, Kolkata - 700162
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#membership" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-base shadow-xl shadow-brand-red/30 hover:scale-105 active:scale-95 transition">
+          START YOUR JOURNEY
+        </a>
+        <button onclick="openBookingModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-zinc-900/90 border border-zinc-700 hover:border-brand-orange text-white font-bold text-base transition hover:scale-105">
+          BOOK A FREE SESSION
+        </button>
+      </div>
+
+      <!-- Animated Counters -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t border-zinc-800/80">
+        <div>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white font-display">500+</h3>
+          <p class="text-xs sm:text-sm text-gray-400 font-medium">Happy Members</p>
+        </div>
+        <div>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-brand-orange font-display">Mr. India</h3>
+          <p class="text-xs sm:text-sm text-gray-400 font-medium">Head Mentorship</p>
+        </div>
+        <div>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white font-display">10+</h3>
+          <p class="text-xs sm:text-sm text-gray-400 font-medium">Years Experience</p>
+        </div>
+        <div>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-brand-orange font-display">15K+</h3>
+          <p class="text-xs sm:text-sm text-gray-400 font-medium">Workouts Completed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <a href="#about" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 hover:text-white transition">
+      <span class="text-[10px] uppercase font-bold tracking-widest">Scroll</span>
+      <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+    </a>
+  </section>
+
+  <!-- ================= ABOUT SECTION ================= -->
+  <section id="about" class="py-24 bg-zinc-950/60 border-t border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Image Collage -->
+        <div class="grid grid-cols-2 gap-4 relative">
+          <div class="space-y-4">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" alt="Workout" class="rounded-2xl object-cover h-48 sm:h-64 w-full shadow-lg" />
+            <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=800&auto=format&fit=crop" alt="Equipment" class="rounded-2xl object-cover h-36 sm:h-48 w-full shadow-lg" />
+          </div>
+          <div class="space-y-4 pt-8">
+            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop" alt="Weight Training" class="rounded-2xl object-cover h-36 sm:h-48 w-full shadow-lg" />
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" alt="Personal Training" class="rounded-2xl object-cover h-48 sm:h-64 w-full shadow-lg" />
+          </div>
+          <div class="absolute -bottom-4 -right-4 bg-brand-orange p-4 rounded-2xl shadow-xl text-white flex items-center gap-3">
+            <i data-lucide="award" class="w-8 h-8"></i>
+            <div>
+              <div class="font-bold text-base leading-tight">Championship Legacy</div>
+              <div class="text-xs text-white/80">Born2Fit Kolkata</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Content -->
+        <div class="space-y-6">
+          <div class="inline-flex items-center gap-2 text-brand-orange text-xs font-bold tracking-widest uppercase">
+            <i data-lucide="target" class="w-4 h-4"></i> Who We Are
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+            MORE THAN A GYM. <br /><span class="text-brand-orange">IT'S BORN2FIT.</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+            Founded by Mr. Jit Das (Owner & Mr. India), Born2Fit is built on direct championship pedigree, injury-free biomechanics, and personalized mentorship. Alongside Coach Mr. Suman, we ensure every athlete in Gouranganagar and New Town achieves measurable strength and physique goals.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 py-2 text-sm font-semibold text-gray-200">
+            <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-orange"></i> Strength & Bodybuilding</div>
+            <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-orange"></i> Weight Loss Protocols</div>
+            <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-orange"></i> Functional Athletics</div>
+            <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-orange"></i> Tailored Nutrition</div>
+          </div>
+
+          <div class="pt-4 flex flex-wrap gap-4">
+            <a href="#location" class="px-7 py-3.5 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-brand-orange text-white font-bold text-sm transition flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-brand-orange"></i>
+              <span>VISIT OUR GYM</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROGRAMS SECTION ================= -->
+  <section id="programs" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <div class="text-brand-orange text-xs font-bold tracking-widest uppercase mb-2">Tailored Workouts</div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white">CHOOSE YOUR DISCIPLINE</h2>
+        <p class="text-gray-400 text-sm sm:text-base mt-3">From raw bodybuilding to metabolic conditioning, our programs are architected by Mr. India Jit Das.</p>
+      </div>
+
+      <!-- Program Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="programs-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRAINERS SECTION ================= -->
+  <section id="trainers" class="py-24 bg-zinc-950/60 border-t border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <div class="text-brand-orange text-xs font-bold tracking-widest uppercase mb-2">Master Mentors</div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white">MEET OUR HEAD COACHES</h2>
+        </div>
+        <p class="text-gray-400 text-sm max-w-md">Get direct guidance from Mr. Jit Das and Coach Mr. Suman. Connect with them directly or book your slot.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" id="trainers-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MEMBERSHIP PLANS ================= -->
+  <section id="membership" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <div class="text-brand-orange text-xs font-bold tracking-widest uppercase mb-2">Transparent Pricing</div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white">MEMBERSHIP TIERS</h2>
+        <p class="text-gray-400 text-sm sm:text-base mt-3">Flexible plans without hidden charges. Cancel or upgrade anytime.</p>
+
+        <!-- Monthly / Yearly Toggle -->
+        <div class="inline-flex items-center gap-3 p-1.5 bg-zinc-900 border border-zinc-800 rounded-xl mt-8">
+          <button id="billing-monthly" onclick="setBillingCycle('monthly')" class="px-5 py-2 text-xs font-bold rounded-lg bg-brand-orange text-white transition">Monthly</button>
+          <button id="billing-yearly" onclick="setBillingCycle('yearly')" class="px-5 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1">
+            <span>Yearly</span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-full">Save 20%</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch" id="pricing-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BMI CALCULATOR ================= -->
+  <section id="bmi" class="py-24 bg-zinc-950/80 border-t border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Explainer -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="text-brand-orange text-xs font-bold tracking-widest uppercase">Health Diagnostics</div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white">CALCULATE YOUR BODY MASS INDEX</h2>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            BMI provides an instant gauge of your weight-to-height ratio. Use our diagnostic tool to find where you stand, and let Mr. Jit Das and Coach Mr. Suman design a tailored program.
+          </p>
+
+          <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-3">
+            <div class="text-xs font-bold text-gray-400 uppercase">BMI Thresholds</div>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <span class="text-blue-400">• Underweight: &lt; 18.5</span>
+              <span class="text-emerald-400">• Normal: 18.5 - 24.9</span>
+              <span class="text-amber-400">• Overweight: 25 - 29.9</span>
+              <span class="text-rose-500">• Obese: 30+</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Calculator Box -->
+        <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Age</label>
+              <input type="number" id="bmi-age" value="25" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-brand-orange outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Gender</label>
+              <select id="bmi-gender" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-brand-orange outline-none">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Height (CM)</label>
+              <input type="number" id="bmi-height" value="175" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-brand-orange outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Weight (KG)</label>
+              <input type="number" id="bmi-weight" value="70" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-brand-orange outline-none" />
+            </div>
+          </div>
+
+          <button onclick="calculateBMI()" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-sm tracking-wider uppercase shadow-lg shadow-brand-red/20 hover:scale-[1.01] transition">
+            CALCULATE BMI
+          </button>
+
+          <!-- Result Area -->
+          <div id="bmi-result" class="mt-6 p-5 rounded-2xl bg-zinc-950 border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <span class="text-xs text-gray-400 font-bold uppercase">Your Result</span>
+              <div class="text-3xl font-display font-extrabold text-white" id="bmi-val">22.9</div>
+              <div class="text-xs font-bold text-emerald-400" id="bmi-cat">Normal Weight</div>
+            </div>
+            <button onclick="openBookingModal()" class="px-5 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white transition">
+              Get Personalized Diet Plan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORKOUT TRACKER ================= -->
+  <section id="tracker" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <div class="text-brand-orange text-xs font-bold tracking-widest uppercase mb-2">Interactive Logger</div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white">LOG YOUR DAILY WORKOUT</h2>
+        </div>
+        <div class="text-xs text-gray-400">Data automatically persists to local storage</div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Input Form -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+          <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <i data-lucide="plus-circle" class="w-5 h-5 text-brand-orange"></i> Add Exercise Set
+          </h3>
+          <form id="workout-form" onsubmit="addWorkoutEntry(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Exercise Name</label>
+              <input type="text" id="ex-name" required placeholder="e.g., Barbell Squat" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-brand-orange outline-none" />
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Sets</label>
+                <input type="number" id="ex-sets" required value="3" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:border-brand-orange outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Reps</label>
+                <input type="number" id="ex-reps" required value="10" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:border-brand-orange outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Weight (KG)</label>
+                <input type="number" id="ex-weight" required value="60" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:border-brand-orange outline-none" />
+              </div>
+            </div>
+            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-brand-red/20 hover:scale-[1.01] transition">
+              Log Exercise
+            </button>
+          </form>
+        </div>
+
+        <!-- History & Stats -->
+        <div class="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="activity" class="w-5 h-5 text-brand-orange"></i> Today's Routine
+              </h3>
+              <button onclick="clearWorkouts()" class="text-xs text-rose-400 hover:underline">Clear All</button>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-zinc-800 text-gray-400 uppercase font-semibold">
+                    <th class="py-3 px-2">Exercise</th>
+                    <th class="py-3 px-2">Sets x Reps</th>
+                    <th class="py-3 px-2">Weight</th>
+                    <th class="py-3 px-2 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="workout-list" class="divide-y divide-zinc-800/60 text-gray-300">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800 mt-6">
+            <div class="bg-zinc-950 p-3 rounded-xl">
+              <div class="text-[10px] uppercase font-bold text-gray-400">Total Exercises</div>
+              <div class="text-xl font-bold text-white" id="stat-exercises">0</div>
+            </div>
+            <div class="bg-zinc-950 p-3 rounded-xl">
+              <div class="text-[10px] uppercase font-bold text-gray-400">Total Volume</div>
+              <div class="text-xl font-bold text-brand-orange" id="stat-volume">0 KG</div>
+            </div>
+            <div class="bg-zinc-950 p-3 rounded-xl">
+              <div class="text-[10px] uppercase font-bold text-gray-400">Workout Streak</div>
+              <div class="text-xl font-bold text-emerald-400">5 Days 🔥</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LOCATION & SEPARATE CONTACT SECTION ================= -->
+  <section id="location" class="py-24 bg-zinc-950/60 border-t border-zinc-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-brand-orange text-xs font-bold tracking-widest uppercase mb-2">Location & Contacts</div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white">FIND US & CONNECT DIRECTLY</h2>
+        <p class="text-gray-400 text-sm mt-3">Located right above the Gouranganagar Post Office in New Town, Kolkata. Reach our front desk or our trainers directly.</p>
+      </div>
+
+      <!-- Separate Contact Cards for Gym, Jit Das, Suman -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- Gym General Contact -->
+        <div class="bg-zinc-900 border border-zinc-800 hover:border-brand-orange transition rounded-3xl p-6 relative overflow-hidden">
+          <div class="w-10 h-10 rounded-xl bg-brand-orange/10 text-brand-orange flex items-center justify-center mb-4">
+            <i data-lucide="building-2" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white font-display mb-1">Born2Fit Front Desk</h3>
+          <p class="text-xs text-gray-400 mb-4">Memberships, timings, queries & general access</p>
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="phone" class="w-4 h-4 text-brand-orange"></i>
+              <a href="tel:+919876543210" class="hover:text-white">+91 98765 43210</a>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="mail" class="w-4 h-4 text-brand-orange"></i>
+              <a href="mailto:info@born2fitgym.com" class="hover:text-white">info@born2fitgym.com</a>
+            </div>
+          </div>
+          <div class="mt-5 pt-4 border-t border-zinc-800/80">
+            <a href="https://wa.me/919876543210?text=Hi%2C%20I%20have%20an%20inquiry%20about%20Born2Fit%20Gym%20membership." target="_blank" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-[#25D366] hover:text-black font-bold text-xs flex items-center justify-center gap-2 transition text-white">
+              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Reception
+            </a>
+          </div>
+        </div>
+
+        <!-- Mr. Jit Das Contact -->
+        <div class="bg-zinc-900 border-2 border-brand-orange/40 hover:border-brand-orange transition rounded-3xl p-6 relative overflow-hidden shadow-xl shadow-brand-red/5">
+          <span class="absolute top-4 right-4 bg-brand-orange text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md">Founder</span>
+          <div class="w-10 h-10 rounded-xl bg-brand-orange/10 text-brand-orange flex items-center justify-center mb-4">
+            <i data-lucide="trophy" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white font-display mb-1">Mr. Jit Das</h3>
+          <p class="text-xs text-brand-orange font-bold mb-4">Owner & Head Coach (Mr. India)</p>
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="phone-call" class="w-4 h-4 text-brand-orange"></i>
+              <a href="tel:+919830012345" class="hover:text-white">+91 98300 12345 (Direct)</a>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="mail" class="w-4 h-4 text-brand-orange"></i>
+              <a href="mailto:jitdas@born2fitgym.com" class="hover:text-white">jitdas@born2fitgym.com</a>
+            </div>
+          </div>
+          <div class="mt-5 pt-4 border-t border-zinc-800/80">
+            <a href="https://wa.me/919830012345?text=Hello%20Mr.%20Jit%20Das%2C%20I%20would%20like%20to%20consult%20regarding%20personal%20training%20under%20you." target="_blank" class="w-full py-2.5 rounded-xl bg-brand-orange hover:bg-brand-red text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md">
+              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Mr. Jit Das
+            </a>
+          </div>
+        </div>
+
+        <!-- Mr. Suman Contact -->
+        <div class="bg-zinc-900 border border-zinc-800 hover:border-brand-orange transition rounded-3xl p-6 relative overflow-hidden">
+          <div class="w-10 h-10 rounded-xl bg-brand-orange/10 text-brand-orange flex items-center justify-center mb-4">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white font-display mb-1">Mr. Suman</h3>
+          <p class="text-xs text-gray-400 mb-4">Senior Fitness & Transformation Coach</p>
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="phone-call" class="w-4 h-4 text-brand-orange"></i>
+              <a href="tel:+919874456789" class="hover:text-white">+91 98744 56789 (Direct)</a>
+            </div>
+            <div class="flex items-center gap-2 text-gray-300 font-medium">
+              <i data-lucide="mail" class="w-4 h-4 text-brand-orange"></i>
+              <a href="mailto:suman@born2fitgym.com" class="hover:text-white">suman@born2fitgym.com</a>
+            </div>
+          </div>
+          <div class="mt-5 pt-4 border-t border-zinc-800/80">
+            <a href="https://wa.me/919874456789?text=Hello%20Coach%20Suman%2C%20I%20would%20like%20to%20discuss%20workout%20scheduling%20at%20Born2Fit." target="_blank" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-[#25D366] hover:text-black font-bold text-xs flex items-center justify-center gap-2 transition text-white">
+              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Coach Suman
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map & Full Contact Form -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <!-- Interactive Google Map Embed -->
+        <div class="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden flex flex-col justify-between p-4">
+          <div class="rounded-2xl overflow-hidden h-72 sm:h-96 w-full border border-zinc-800 relative">
+            <!-- Google Maps Iframe for Gouranganagar Post Office, New Town -->
+            <iframe 
+              title="Born2Fit Gym Location"
+              src="https://maps.google.com/maps?q=Gouranganagar+Post+Office,+New+Town,+Kolkata,+West+Bengal+700162&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+              class="w-full h-full border-0 grayscale invert contrast-125 opacity-90 hover:grayscale-0 hover:invert-0 transition duration-500" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+
+          <div class="pt-4 px-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div class="text-sm font-bold text-white flex items-center gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-orange"></i>
+                Born2Fit Gym, Above Gouranganagar Post Office
+              </div>
+              <div class="text-xs text-gray-400 mt-0.5">Gouranganagar, New Town, Kolkata - 700162, West Bengal</div>
+            </div>
+            <a href="https://maps.google.com/?q=Gouranganagar+Post+Office,+New+Town,+Kolkata,+West+Bengal+700162" target="_blank" class="px-4 py-2 bg-brand-orange hover:bg-brand-red text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition shrink-0">
+              <i data-lucide="navigation" class="w-3.5 h-3.5"></i> Open in Google Maps
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Query Form -->
+        <div class="lg:col-span-5 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-white font-display mb-1">LEAVE A MESSAGE</h3>
+            <p class="text-xs text-gray-400 mb-6">Send your contact request directly to our team.</p>
+            
+            <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Your Full Name</label>
+                <input type="text" required placeholder="John Doe" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-xs focus:border-brand-orange outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Phone Number</label>
+                <input type="tel" required placeholder="+91 98765 43210" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-xs focus:border-brand-orange outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Select Coach / Desk</label>
+                <select class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-xs focus:border-brand-orange outline-none">
+                  <option>General Desk Inquiry</option>
+                  <option>Consultation with Mr. Jit Das (Mr. India)</option>
+                  <option>Training with Coach Mr. Suman</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Message</label>
+                <textarea rows="3" required placeholder="Tell us about your fitness targets..." class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-white text-xs focus:border-brand-orange outline-none resize-none"></textarea>
+              </div>
+              <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-brand-red/20 hover:scale-[1.01] transition">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#070709] border-t border-zinc-900 py-12 text-sm text-gray-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div class="space-y-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-red flex items-center justify-center text-white font-black text-sm">
+              <i data-lucide="flame" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-display font-extrabold tracking-wider text-white">Born2Fit</span>
+          </div>
+          <p class="text-xs text-gray-500">Above Gouranganagar Post Office, New Town, Kolkata - 700162. Led by Mr. India Jit Das and Coach Mr. Suman.</p>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase mb-3">Quick Navigation</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#about" class="hover:text-white transition">About Born2Fit</a></li>
+            <li><a href="#programs" class="hover:text-white transition">Workout Programs</a></li>
+            <li><a href="#trainers" class="hover:text-white transition">Mr. Jit Das & Mr. Suman</a></li>
+            <li><a href="#location" class="hover:text-white transition">Google Maps & Contacts</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase mb-3">Direct Contacts</h4>
+          <ul class="space-y-2 text-xs">
+            <li><span class="text-gray-300">Desk:</span> +91 98765 43210</li>
+            <li><span class="text-gray-300">Mr. Jit Das:</span> +91 98300 12345</li>
+            <li><span class="text-gray-300">Mr. Suman:</span> +91 98744 56789</li>
+            <li><span class="text-gray-300">Email:</span> info@born2fitgym.com</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-xs uppercase mb-3">Stay Updated</h4>
+          <p class="text-xs text-gray-500 mb-3">Subscribe to our weekly fitness insights.</p>
+          <div class="flex gap-2">
+            <input type="email" placeholder="Enter email" class="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-orange flex-1" />
+            <button onclick="showToast('Subscribed!', 'You will receive weekly fitness tips.')" class="px-3 py-2 bg-brand-orange rounded-lg text-white font-bold text-xs">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+        <div>© 2026 Born2Fit Gym. Above Gouranganagar Post Office, New Town, Kolkata. All rights reserved.</div>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-white">Privacy Policy</a>
+          <a href="#" class="hover:text-white">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING WHATSAPP CTA ================= -->
+  <a href="https://wa.me/919876543210?text=Hi%2C%20I%20am%20interested%20in%20joining%20Born2Fit%20Gym%20at%20Gouranganagar%2C%20New%20Town!" target="_blank" class="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition flex items-center justify-center" title="Chat with Born2Fit">
+    <i data-lucide="message-circle" class="w-7 h-7"></i>
+  </a>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Program Details Modal -->
+  <div id="program-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full p-6 relative">
+      <button onclick="closeModal('program-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <div id="program-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="booking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full p-6 relative">
+      <button onclick="closeModal('booking-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <h3 class="text-xl font-bold text-white mb-2 font-display">SCHEDULE YOUR SESSION</h3>
+      <p class="text-xs text-gray-400 mb-4">Book your 1-on-1 evaluation or personal training slot at our Gouranganagar facility.</p>
+      
+      <form onsubmit="handleBookingSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Select Coach</label>
+          <select id="book-trainer" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Select Service</label>
+          <select id="book-service" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none">
+            <option>Personal Training Session</option>
+            <option>Body Assessment & Consultation</option>
+            <option>Dietary Routine Design</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Date</label>
+            <input type="date" required id="book-date" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Time Slot</label>
+            <select id="book-time" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none">
+              <option>09:00 AM</option>
+              <option>11:30 AM</option>
+              <option>04:00 PM</option>
+              <option>06:30 PM</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Your Full Name</label>
+          <input type="text" required id="book-name" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Phone Number</label>
+          <input type="tel" required id="book-phone" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none" />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-xs uppercase tracking-wider mt-2">
+          Confirm Reservation
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-sm w-full p-6 relative">
+      <button onclick="closeModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <h3 class="text-xl font-bold text-white mb-2 font-display">MEMBER LOGIN</h3>
+      <p class="text-xs text-gray-400 mb-4">Access your customized member portal.</p>
+      
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Email</label>
+          <input type="email" required value="member@born2fitgym.com" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Password</label>
+          <input type="password" required value="••••••••" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs outline-none" />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-xs uppercase tracking-wider mt-2">
+          Enter Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // App Data Configuration
+    const gymConfig = {
+      name: "Born2Fit",
+      address: "Above Gouranganagar Post Office, Gouranganagar, New Town, Kolkata - 700162",
+      phone: "+91 98765 43210",
+      email: "info@born2fitgym.com",
+      billingCycle: "monthly",
+      programs: [
+        {
+          id: 'pt',
+          name: 'Personal Training',
+          desc: '1-on-1 private coaching tailored to biomechanics, progressive overload, and specific body transformation goals.',
+          duration: '60 Mins',
+          level: 'All Levels',
+          image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          id: 'strength',
+          name: 'Strength & Bodybuilding',
+          desc: 'Structured powerlifting and bodybuilding routines designed by Mr. India Jit Das for raw strength and muscle mass.',
+          duration: '75 Mins',
+          level: 'Intermediate',
+          image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          id: 'weightloss',
+          name: 'Weight Loss & Shred',
+          desc: 'High-intensity conditioning designed to maximize metabolic burn and preserve dense lean muscle.',
+          duration: '45 Mins',
+          level: 'Beginner',
+          image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          id: 'functional',
+          name: 'Functional Fitness',
+          desc: 'Agility, core stamina, and athletic movement designed to build durable real-world durability.',
+          duration: '50 Mins',
+          level: 'All Levels',
+          image: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=800&auto=format&fit=crop'
+        }
+      ],
+      trainers: [
+        {
+          name: 'Mr. Jit Das',
+          role: 'Owner & Head Coach (Mr. India)',
+          phone: '+91 98300 12345',
+          exp: '12+ Years Experience',
+          rating: '5.0',
+          image: 'https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          name: 'Mr. Suman',
+          role: 'Senior Fitness & Transformation Coach',
+          phone: '+91 98744 56789',
+          exp: '7+ Years Experience',
+          rating: '4.9',
+          image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop'
+        }
+      ],
+      plans: [
+        {
+          id: 'basic',
+          name: 'Basic Plan',
+          monthly: 999,
+          yearly: 799,
+          features: ['Full Gym Floor Access', 'Locker & Shower Access', 'Free Fitness Assessment', 'Cardio Deck Access'],
+          popular: false
+        },
+        {
+          id: 'pro',
+          name: 'Pro Athlete',
+          monthly: 1999,
+          yearly: 1599,
+          features: ['Everything in Basic', 'Personalized Workout Plan', 'Customized Diet Blueprint', '2 PT Sessions / Month', 'Sauna & Steam Recovery'],
+          popular: true
+        },
+        {
+          id: 'elite',
+          name: 'Elite Transformation',
+          monthly: 3499,
+          yearly: 2799,
+          features: ['Everything in Pro', 'Unlimited 1-on-1 PT Sessions', 'Weekly Macro Adjustments', 'Priority Slot Booking with Jit Das', 'Born2Fit Apparel Pack'],
+          popular: false
+        }
+      ]
+    };
+
+    // Initialize State
+    let workouts = JSON.parse(localStorage.getItem('born2fit_workouts')) || [
+      { name: 'Barbell Bench Press', sets: 4, reps: 10, weight: 80 },
+      { name: 'Incline Dumbbell Press', sets: 3, reps: 12, weight: 28 },
+      { name: 'Cable Tricep Pushdowns', sets: 4, reps: 15, weight: 35 }
+    ];
+
+    // Render Components on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderPrograms();
+      renderTrainers();
+      renderPricing();
+      renderWorkouts();
+      populateTrainerSelect();
+    });
+
+    // Render Programs
+    function renderPrograms() {
+      const container = document.getElementById('programs-grid');
+      container.innerHTML = gymConfig.programs.map(p => `
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden group hover:border-brand-orange transition">
+          <div class="h-48 overflow-hidden relative">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <span class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-[10px] font-bold text-white px-2.5 py-1 rounded-full uppercase">${p.level}</span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white mb-2 font-display">${p.name}</h3>
+            <p class="text-xs text-gray-400 mb-4 line-clamp-2">${p.desc}</p>
+            <div class="flex items-center justify-between pt-4 border-t border-zinc-800">
+              <span class="text-xs text-gray-400">${p.duration}</span>
+              <button onclick="viewProgramDetails('${p.id}')" class="text-xs font-bold text-brand-orange hover:underline">View Details →</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Trainers
+    function renderTrainers() {
+      const container = document.getElementById('trainers-grid');
+      container.innerHTML = gymConfig.trainers.map(t => `
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden group hover:border-brand-orange transition flex flex-col justify-between">
+          <div class="h-80 overflow-hidden relative">
+            <img src="${t.image}" alt="${t.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md text-xs font-bold text-white px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+              <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> ${t.rating} Rating
+            </div>
+          </div>
+          <div class="p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-2xl font-bold text-white font-display">${t.name}</h3>
+              <span class="text-xs font-semibold text-gray-400">${t.exp}</span>
+            </div>
+            <p class="text-xs text-brand-orange font-bold uppercase tracking-wider">${t.role}</p>
+            
+            <div class="pt-2 flex items-center gap-2">
+              <a href="tel:${t.phone}" class="flex-1 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl text-xs font-semibold text-center flex items-center justify-center gap-1.5 transition">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-orange"></i> Call ${t.phone}
+              </a>
+              <button onclick="openBookingModal('${t.name}')" class="flex-1 py-2 bg-brand-orange hover:bg-brand-red text-white rounded-xl text-xs font-bold text-center transition">
+                Book Slot
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Render Pricing
+    function renderPricing() {
+      const container = document.getElementById('pricing-grid');
+      const isYearly = gymConfig.billingCycle === 'yearly';
+
+      container.innerHTML = gymConfig.plans.map(plan => {
+        const price = isYearly ? plan.yearly : plan.monthly;
+        return `
+          <div class="rounded-3xl p-8 flex flex-col justify-between relative transition ${plan.popular ? 'bg-zinc-900 border-2 border-brand-orange shadow-2xl shadow-brand-red/10 scale-105 z-10' : 'bg-zinc-900/70 border border-zinc-800'}">
+            ${plan.popular ? '<div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-orange text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">Most Popular</div>' : ''}
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2 font-display">${plan.name}</h3>
+              <div class="flex items-baseline gap-1 my-4">
+                <span class="text-4xl font-extrabold text-white font-display">₹${price}</span>
+                <span class="text-xs text-gray-400">/ month</span>
+              </div>
+              <ul class="space-y-3 my-6 text-xs text-gray-300">
+                ${plan.features.map(f => `<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-orange"></i> ${f}</li>`).join('')}
+              </ul>
+            </div>
+            <button onclick="selectPlan('${plan.name}')" class="w-full py-3.5 rounded-xl ${plan.popular ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white' : 'bg-zinc-800 hover:bg-zinc-700 text-white'} text-xs font-bold uppercase tracking-wider transition">
+              Choose Plan
+            </button>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function setBillingCycle(cycle) {
+      gymConfig.billingCycle = cycle;
+      document.getElementById('billing-monthly').className = cycle === 'monthly' ? 'px-5 py-2 text-xs font-bold rounded-lg bg-brand-orange text-white transition' : 'px-5 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition';
+      document.getElementById('billing-yearly').className = cycle === 'yearly' ? 'px-5 py-2 text-xs font-bold rounded-lg bg-brand-orange text-white transition' : 'px-5 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition';
+      renderPricing();
+    }
+
+    // Workout Tracker Operations
+    function renderWorkouts() {
+      const list = document.getElementById('workout-list');
+      list.innerHTML = workouts.map((w, index) => `
+        <tr>
+          <td class="py-3 px-2 font-semibold text-white">${w.name}</td>
+          <td class="py-3 px-2">${w.sets} sets × ${w.reps} reps</td>
+          <td class="py-3 px-2">${w.weight} KG</td>
+          <td class="py-3 px-2 text-right">
+            <button onclick="deleteWorkout(${index})" class="text-rose-400 hover:text-rose-300 font-bold">×</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('stat-exercises').innerText = workouts.length;
+      const totalVol = workouts.reduce((acc, curr) => acc + (curr.sets * curr.reps * curr.weight), 0);
+      document.getElementById('stat-volume').innerText = `${totalVol.toLocaleString()} KG`;
+      localStorage.setItem('born2fit_workouts', JSON.stringify(workouts));
+    }
+
+    function addWorkoutEntry(e) {
+      e.preventDefault();
+      const name = document.getElementById('ex-name').value;
+      const sets = parseInt(document.getElementById('ex-sets').value);
+      const reps = parseInt(document.getElementById('ex-reps').value);
+      const weight = parseInt(document.getElementById('ex-weight').value);
+
+      workouts.push({ name, sets, reps, weight });
+      renderWorkouts();
+      document.getElementById('workout-form').reset();
+      showToast('Workout Logged', `${name} recorded successfully!`);
+    }
+
+    function deleteWorkout(index) {
+      workouts.splice(index, 1);
+      renderWorkouts();
+    }
+
+    function clearWorkouts() {
+      workouts = [];
+      renderWorkouts();
+    }
+
+    // BMI Calculator
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('bmi-height').value) / 100;
+      const weight = parseFloat(document.getElementById('bmi-weight').value);
+      
+      if (!height || !weight) return;
+      const bmi = (weight / (height * height)).toFixed(1);
+      
+      let cat = 'Normal Weight';
+      let color = 'text-emerald-400';
+      if (bmi < 18.5) { cat = 'Underweight'; color = 'text-blue-400'; }
+      else if (bmi >= 25 && bmi < 30) { cat = 'Overweight'; color = 'text-amber-400'; }
+      else if (bmi >= 30) { cat = 'Obese'; color = 'text-rose-500'; }
+
+      document.getElementById('bmi-val').innerText = bmi;
+      const catEl = document.getElementById('bmi-cat');
+      catEl.innerText = cat;
+      catEl.className = `text-xs font-bold ${color}`;
+      showToast('BMI Calculated', `Your BMI is ${bmi} (${cat})`);
+    }
+
+    // Modals & UI Triggers
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function viewProgramDetails(id) {
+      const p = gymConfig.programs.find(item => item.id === id);
+      if (!p) return;
+      const content = document.getElementById('program-modal-content');
+      content.innerHTML = `
+        <h3 class="text-2xl font-bold text-white mb-1 font-display">${p.name}</h3>
+        <p class="text-xs text-brand-orange mb-4 font-semibold">${p.duration} • ${p.level}</p>
+        <p class="text-sm text-gray-300 mb-6 leading-relaxed">${p.desc}</p>
+        <button onclick="closeModal('program-modal'); openBookingModal();" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold text-xs uppercase tracking-wider">
+          Book This Discipline
+        </button>
+      `;
+      openModal('program-modal');
+    }
+
+    function populateTrainerSelect() {
+      const select = document.getElementById('book-trainer');
+      select.innerHTML = gymConfig.trainers.map(t => `<option value="${t.name}">${t.name} (${t.role})</option>`).join('');
+    }
+
+    function openBookingModal(trainerName) {
+      if (trainerName) {
+        document.getElementById('book-trainer').value = trainerName;
+      }
+      openModal('booking-modal');
+    }
+
+    function handleBookingSubmit(e) {
+      e.preventDefault();
+      const trainer = document.getElementById('book-trainer').value;
+      const date = document.getElementById('book-date').value;
+      const time = document.getElementById('book-time').value;
+      closeModal('booking-modal');
+      showToast('Booking Confirmed!', `Session scheduled with ${trainer} on ${date} at ${time}.`);
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      closeModal('auth-modal');
+      showToast('Welcome back, Athlete!', 'Successfully connected to Born2Fit member dashboard.');
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      e.target.reset();
+      showToast('Message Transmitted', 'Coach Jit Das / Coach Suman will contact you shortly.');
+    }
+
+    function selectPlan(planName) {
+      showToast('Plan Selected', `Initiating checkout sequence for ${planName}...`);
+      openBookingModal();
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      showToast('Theme Updated', 'Display preferences adjusted.');
+    }
+
+    function showToast(title, message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-title').innerText = title;
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('translate-x-96', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-x-96', 'opacity-0');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
